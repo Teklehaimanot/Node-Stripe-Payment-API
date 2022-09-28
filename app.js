@@ -1,12 +1,21 @@
 const express = require('express')
-require("dotenv").config()
-const stripe = require('stripe')(process.env.STRIPE_SECRET_TEST)
+const path = require('path')
+require('dotenv/config')
+const secreteKey = process.env.STRIPE_SECRET_TEST
+const stripe = require('stripe')(secreteKey)
 const cors = require('cors')
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, 'myshop/build')));
+
+app.get('/', (req, res) => {
+    res.json({ message: 'Hello from server' })
+})
 app.post('/payment', async (req, res) => {
     let { amount, id } = req.body
     try {
