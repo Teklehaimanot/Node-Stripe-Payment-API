@@ -49,17 +49,28 @@ app.post("/api/pay", async (req, res) => {
         tx_ref: TEXT_REF,
         callback_url: CALLBACK_URL + TEXT_REF
     }
-
-    console.log(data.callback_url)
-
     // post request to chapa
     await axios.post(CHAPA_URL, data, config)
         .then((response) => {
             // res.redirect(response.data.data.checkout_url)
             res.json(response.data)
-            console.log(response.data)
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+            res.json({ message: 'payment faild' })
+        })
+})
+
+// verification endpoint
+app.get("/api/success/:id", async (req, res) => {
+
+    //verify the transaction 
+    await axios.get("https://api.chapa.co/v1/transaction/verify/" + req.params.id, config)
+        .then((response) => {
+            console.log(response)
+            res.json(response.data)
+            // res.render("success") //redirect to success page
+        })
+        .catch((err) => console.log("Payment can't be verfied", err))
 })
 
 app.post('/payment', async (req, res) => {
