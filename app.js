@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 app.post("/api/pay", async (req, res) => {
 
     // chapa redirect you to this url when payment is successful
-    const CALLBACK_URL = "http://localhost:5000/api/success/"
+    const CALLBACK_URL = "https://myshop-teklehaimanot.vercel.app/checkout"
 
     // a unique reference given to every transaction
     const TEXT_REF = "tx-gebeyashop-" + Date.now()
